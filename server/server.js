@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import { protect }
 from "./middleware/authMiddleware.js";
+import taskRoutes from "./routes/taskRoutes.js";
 
 dotenv.config();
 
@@ -31,6 +32,8 @@ app.get("/", (req, res) => {
 // Auth Routes
 app.use("/api/auth", authRoutes);
 
+// Task Routes
+app.use("/api/tasks", taskRoutes);
 
 // Server
 const PORT = process.env.PORT || 5000;
