@@ -3,6 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 
 import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import { protect }
+from "./middleware/authMiddleware.js";
 
 dotenv.config();
 
@@ -16,7 +19,6 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use(express.urlencoded({ extended: true }));
 
 // Health Check Route
 app.get("/", (req, res) => {
@@ -25,6 +27,10 @@ app.get("/", (req, res) => {
     message: "Task Management API Running Successfully",
   });
 });
+
+// Auth Routes
+app.use("/api/auth", authRoutes);
+
 
 // Server
 const PORT = process.env.PORT || 5000;
