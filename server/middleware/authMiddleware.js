@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
-export const protect = async (req,res,next) => {
+export const protect = async (req, res, next) => {
   try {
-    const authHeader =
-      req.headers.authorization;
+    const authHeader = req.headers.authorization;
 
     if (!authHeader) {
       return res.status(401).json({
@@ -13,29 +12,22 @@ export const protect = async (req,res,next) => {
       });
     }
 
-    if (
-      !authHeader.startsWith("Bearer ")
-    ) {
+    if (!authHeader.startsWith("Bearer ")) {
       return res.status(401).json({
         success: false,
-        message:
-          "Invalid token format",
+        message: "Invalid token format",
       });
     }
 
-    const token =
-      authHeader.split(" ")[1];
+    const token = authHeader.split(" ")[1];
 
-    const decoded =
-      jwt.verify(
-        token,
-        process.env.JWT_SECRET
-      );
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET
+    );
 
-    const user =
-      await User.findById(
-        decoded.id
-      ).select("-password");
+    const user = await User.findById(decoded.id)
+      .select("-password");
 
     if (!user) {
       return res.status(401).json({
@@ -47,17 +39,12 @@ export const protect = async (req,res,next) => {
     req.user = user;
 
     next();
-
   } catch (error) {
-    console.error(
-      "Authentication Error:",
-      error
-    );
+    console.error(error.message);
 
     return res.status(401).json({
       success: false,
-      message:
-        "Not authorized, token failed",
+      message: "Not authorized, token failed",
     });
   }
 };

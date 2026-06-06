@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
-import { protect }
-from "./middleware/authMiddleware.js";
 import taskRoutes from "./routes/taskRoutes.js";
+import notFoundMiddleware from "./middleware/notFoundMiddleware.js";
+import errorMiddleware from "./middleware/errorMiddleware.js";
 
 dotenv.config();
 
@@ -34,6 +34,9 @@ app.use("/api/auth", authRoutes);
 
 // Task Routes
 app.use("/api/tasks", taskRoutes);
+
+app.use(notFoundMiddleware);
+app.use(errorMiddleware);
 
 // Server
 const PORT = process.env.PORT || 5000;
