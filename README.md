@@ -1,6 +1,6 @@
 
 
-# 1️⃣ Task Management Application
+# Task Management Application
 
 
 A full-stack MERN Task Management Application that allows users to create, update, delete, and manage tasks efficiently with secure JWT-based authentication.
