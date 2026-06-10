@@ -1,10 +1,15 @@
+import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "react-hot-toast";
+
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-4xl font-bold">
-        Tailwind Working
-      </h1>
-    </div>
+    <>
+      <Toaster
+        position="top-right"
+      />
+
+      <AppRoutes />
+    </>
   );
 }
 

@@ -5,7 +5,6 @@ export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validation
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -13,10 +12,7 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // Existing user check
-    const existingUser = await User.findOne({
-      email,
-    });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return res.status(409).json({
@@ -25,14 +21,12 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // Create user
     const user = await User.create({
       name,
       email,
       password,
     });
 
-    // Generate token
     const token = generateToken(user._id);
 
     return res.status(201).json({
@@ -59,7 +53,6 @@ export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validation
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -67,10 +60,7 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Find user
-    const user = await User.findOne({
-      email,
-    });
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(401).json({
@@ -79,10 +69,7 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Compare password
-    const isMatch = await user.matchPassword(
-      password
-    );
+    const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
       return res.status(401).json({
@@ -91,7 +78,6 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    // Generate token
     const token = generateToken(user._id);
 
     return res.status(200).json({
